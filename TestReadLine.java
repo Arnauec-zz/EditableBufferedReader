@@ -6,7 +6,6 @@ import java.io.*;
 
 class TestReadLine {
     public static void main(String[] args) {
-        KeyIdentifier test = new KeyIdentifier(new InputStreamReader(System.in));
         EditableBufferedReader in = new EditableBufferedReader(new InputStreamReader(System.in));
         String str = null;
         try {

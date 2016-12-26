@@ -42,9 +42,8 @@ public class EditableBufferedReader extends BufferedReader {
     
     public EditableBufferedReader(InputStreamReader in){
         super(in);
-        this.linia  = new Line();
-        this.consola = new Console(this.linia);
-        linia.addObserver(this.consola);
+        this.consola = new Console();
+        this.linia  = new Line(this.consola);
     }
     public void setRaw(){
         try{
@@ -107,11 +106,6 @@ public class EditableBufferedReader extends BufferedReader {
                 pos[1] = super.read();
                 return CLIC_DRET;
             }
-            if(match("\033[M")) {
-                pos[0] = super.read();
-                pos[1] = super.read();
-                return CLIC_ESQUERRA;
-            }
             if(match("\033[M`")) {
                 pos[0] = super.read();
                 pos[1] = super.read();
@@ -121,6 +115,11 @@ public class EditableBufferedReader extends BufferedReader {
                 pos[0] = super.read();
                 pos[1] = super.read();
                 return RODA_AMUNT;
+            }
+            if(match("\033[M\"")) {
+                pos[0] = super.read();
+                pos[1] = super.read();
+                return CLIC_ESQUERRA;
             }
             return car[0];
         } catch (IOException e){
@@ -138,6 +137,7 @@ public class EditableBufferedReader extends BufferedReader {
             char car;
             switch(i){
                 case CARRIAGE_RETURN:
+                    unsetRaw();
                     loop = true;
                     linia.carReturn();
                     break;
@@ -186,7 +186,6 @@ public class EditableBufferedReader extends BufferedReader {
                     }
                 }
         }
-        unsetRaw();
         return linia.toString();
     }
     

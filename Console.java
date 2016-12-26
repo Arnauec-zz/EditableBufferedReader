@@ -6,6 +6,9 @@
 package labpad;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,8 +31,7 @@ public class Console implements Observer {
     static final int SUPRIMIR = 309;
     Line linia;
 
-    public Console(Line line) {
-        this.linia = line;
+    public Console() {
     }
 
     static class Command {
@@ -42,6 +44,7 @@ public class Console implements Observer {
         }
     }
 
+    @Override
     public void update(Observable ob, Object o) {
         char car;
         Command com = (Command) o;

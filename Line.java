@@ -32,13 +32,14 @@ public class Line extends Observable {
     private boolean insercio; // true - inserció ; false - sobreescriptura
     private MyStringBuffer string;
 
-    public Line() {
+    public Line(Console console) {
         this.insercio = false;
         this.string = new MyStringBuffer();
+        this.addObserver(console);
     }
 
     public void carReturn() {
-        notifyObservers();
+        this.notifyObservers();
     }
 
     public void end() {
@@ -47,6 +48,7 @@ public class Line extends Observable {
 
     public void home() {
         posx = 0;
+        setChanged();
         notifyObservers(new Console.Command(INICI, 0));
     }
 
@@ -65,6 +67,7 @@ public class Line extends Observable {
         if (insercio) {
             o = 1;
         }
+        setChanged();
         notifyObservers(new Console.Command(a, o));
     }
 
@@ -80,13 +83,15 @@ public class Line extends Observable {
         string.deleteCharAt(posx);
         posx--;
         numChar--;
+        setChanged();
         notifyObservers(new Console.Command(BACKSPACE, 0));
     }
 
     public void suprimirChar() {
         string.deleteCharAt(posx);
         numChar--;
-        notifyObservers(new Console.Command(SUPRIMIR, 0));
+        this.setChanged();
+        this.notifyObservers(new Console.Command(SUPRIMIR, 0));
     }
 
     public boolean moveCursorLeft() {
@@ -94,6 +99,7 @@ public class Line extends Observable {
             return false;
         }
         posx--;
+        setChanged();
         notifyObservers(new Console.Command(FLETXA_ESQUERRA, 0));
         return true;
     }
@@ -103,6 +109,7 @@ public class Line extends Observable {
             return false;
         }
         posx++;
+        setChanged();
         notifyObservers(new Console.Command(FLETXA_DRETA, 0));
         return true;
     }
@@ -117,6 +124,7 @@ public class Line extends Observable {
             moviment = posCursor - posx;
             posx = posCursor;
         }
+        setChanged();
         notifyObservers(new Console.Command(CLIC_DRET, moviment));
     }
 
